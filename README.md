@@ -44,6 +44,22 @@ Edit `$CONFIG/globals.yml` as needed.
 
 ## 3. Deployment
 
+1. Bootstrap servers with kolla deploy dependencies:
+
 ```shell
 kolla-ansible --configdir=$CONFIG -i ./all-in-one bootstrap-servers
 ```
+
+2. Do pre-deployment checks for hosts:
+
+```shell
+kolla-ansible --configdir=$CONFIG -i ./all-in-one prechecks
+```
+
+3. Finally proceed to actual OpenStack deployment:
+
+```shell
+kolla-ansible --configdir=$CONFIG -i ./all-in-one deploy
+```
+
+When this playbook finishes, OpenStack should be up, running and functional.
