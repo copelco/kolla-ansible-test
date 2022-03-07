@@ -1,0 +1,9 @@
+- hosts: altair
+  become: yes
+  tasks:
+  - import_role:
+      name: geerlingguy.github-users
+    tags: [security]
+  - import_role:
+      name: geerlingguy.security
+    tags: [security]

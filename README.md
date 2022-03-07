@@ -10,6 +10,7 @@ Configure Python environment:
 ```shell
 pip install -U pip
 pip install -r requirements.txt
+ansible-galaxy install -f -r requirements.yml -p roles/
 ```
 
 For Mac, install coreutils (see [matejak/argbash#74](https://github.com/matejak/argbash/issues/74)):
@@ -17,6 +18,16 @@ For Mac, install coreutils (see [matejak/argbash#74](https://github.com/matejak/
 ```shell
 brew install coreutils
 echo 'export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"' >> ~/.zshrc
+```
+
+
+2. Configure node
+
+```shell
+# supply sudo password on first run after Ubuntu install
+ansible-playbook -i ./all-in-one deploy-node.yml --ask-become-pass
+# then
+ansible-playbook -i ./all-in-one deploy-node.yml
 ```
 
 
