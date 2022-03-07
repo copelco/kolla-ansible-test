@@ -23,11 +23,20 @@ echo 'export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"' >> ~/.zshr
 
 2. Configure node
 
+Setup users and security:
+
 ```shell
 # supply sudo password on first run after Ubuntu install
-ansible-playbook -i ./all-in-one deploy-node.yml --ask-become-pass
+ansible-playbook -i ./all-in-one deploy-node.yml --ask-become-pass --tags security
 # then
-ansible-playbook -i ./all-in-one deploy-node.yml
+ansible-playbook -i ./all-in-one deploy-node.yml --tags security
+```
+
+Next, configure LVM and partitions for Cinder and Swift. I found [A Linux user's guide to Logical Volume Management](https://opensource.com/business/16/9/linux-users-guide-lvm) a helpful resource.
+
+```shell
+ansible-playbook -i ./all-in-one deploy-node.yml --tags cinder
+ansible-playbook -i ./all-in-one deploy-node.yml --tags swift
 ```
 
 

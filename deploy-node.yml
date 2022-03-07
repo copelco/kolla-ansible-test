@@ -1,9 +1,35 @@
 - hosts: altair
   become: yes
+  tags: [security]
+  roles:
+    - geerlingguy.github-users
+    - geerlingguy.security
+
+- hosts: altair
+  become: yes
+  tags: [cinder]
   tasks:
-  - import_role:
-      name: geerlingguy.github-users
-    tags: [security]
-  - import_role:
-      name: geerlingguy.security
-    tags: [security]
+    - name: Create a volume group for cinder
+      community.general.lvg:
+        vg: cinder-volumes
+        pvs: /dev/sda3
+        pesize: 300G
+
+- hosts: altair
+  become: yes
+  tags: [swift]
+    # https://github.com/openstack/kolla-ansible/blob/master/doc/source/reference/storage/swift-guide.rst#disks-with-a-partition-table-recommended
+    - name: Label partition for Swift
+      community.general.parted:
+        device: /dev/sda
+        number: 4
+        label: gpt
+        name: KOLLA_SWIFT_DATA
+        fs_type: xfs
+        state: present
+
+    - name: Create a xfs filesystem on Swift partition
+      community.general.filesystem:
+        fstype: xfs
+        dev: /dev/sda4
+        # force: yes
