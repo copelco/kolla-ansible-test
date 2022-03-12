@@ -13,14 +13,6 @@ pip install -r requirements.txt
 ansible-galaxy install -f -r requirements.yml -p roles/
 ```
 
-For Mac, install coreutils (see [matejak/argbash#74](https://github.com/matejak/argbash/issues/74)):
-
-```shell
-brew install coreutils
-echo 'export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"' >> ~/.zshrc
-```
-
-
 2. Configure node
 
 Setup users and security:
