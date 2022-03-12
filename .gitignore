@@ -2,3 +2,4 @@
 .direnv
 **/passwords.yml
 roles/
+altair/octavia*

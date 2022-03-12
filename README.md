@@ -45,7 +45,7 @@ ansible-playbook -i ./all-in-one deploy-node.yml --tags swift
 Start with Kolla boilerplate:
 
 ```shell
-export CONFIG=$PWD/altair/
+export CONFIG=$PWD/altair
 mkdir $CONFIG
 cp -r $VIRTUAL_ENV/share/kolla-ansible/etc_examples/kolla/* $CONFIG
 cp $VIRTUAL_ENV/share/kolla-ansible/ansible/inventory/* .
@@ -70,13 +70,21 @@ Edit `$CONFIG/globals.yml` as needed.
 kolla-ansible --configdir=$CONFIG -i ./all-in-one bootstrap-servers
 ```
 
-2. Do pre-deployment checks for hosts:
+2. Generate Octavia certificates:
+
+Override `node_custom_config` Ansible variable to point to correct config directory.
+
+```
+kolla-ansible --configdir=$CONFIG -i ./all-in-one octavia-certificates -e node_custom_config=$CONFIG
+```
+
+3. Do pre-deployment checks for hosts:
 
 ```shell
 kolla-ansible --configdir=$CONFIG -i ./all-in-one prechecks
 ```
 
-3. Finally proceed to actual OpenStack deployment:
+4. Finally proceed to actual OpenStack deployment:
 
 ```shell
 kolla-ansible --configdir=$CONFIG -i ./all-in-one deploy
