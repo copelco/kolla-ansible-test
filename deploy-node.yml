@@ -18,6 +18,7 @@
 - hosts: altair
   become: yes
   tags: [swift]
+  tasks:
     # https://github.com/openstack/kolla-ansible/blob/master/doc/source/reference/storage/swift-guide.rst#disks-with-a-partition-table-recommended
     - name: Label partition for Swift
       community.general.parted:
