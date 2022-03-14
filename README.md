@@ -96,3 +96,10 @@ pip install python-openstackclient -c https://releases.openstack.org/constraints
 kolla-ansible --configdir=$CONFIG -i ./all-in-one post-deploy -e node_custom_config=$CONFIG
 . ./altair/admin-openrc.sh
 ```
+
+
+### Create example data: networks, images, and so on
+
+```shell
+$VIRTUAL_ENV/share/kolla-ansible/init-runonce
+```
