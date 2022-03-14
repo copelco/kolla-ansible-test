@@ -7,3 +7,26 @@ github_users: ["{{ user }}"]
 
 # geerlingguy.security
 security_sudoers_passwordless: ["{{ user }}"]
+
+# mrlesmithjr.netplan
+netplan_config_file: /etc/netplan/00-installer-config.yaml
+netplan_renderer: networkd
+netplan_configuration:
+  network:
+    ethernets:
+      eno1:
+        dhcp4: no
+        addresses:
+          - 192.168.1.10/24
+        gateway4: 192.168.1.1
+        nameservers:
+          addresses: [8.8.8.8, 8.8.4.4]
+    vlans:
+      vlan100:
+          id: 100
+          link: eno1
+          dhcp4: no
+          addresses:
+            - 192.168.10.100/24
+          gateway4: 192.168.10.1
+    version: 2

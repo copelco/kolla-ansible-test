@@ -7,6 +7,12 @@
 
 - hosts: altair
   become: yes
+  tags: [network]
+  roles:
+    - mrlesmithjr.netplan
+
+- hosts: altair
+  become: yes
   tags: [cinder]
   tasks:
     - name: Create a volume group for cinder
