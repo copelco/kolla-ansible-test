@@ -21,6 +21,7 @@ netplan_configuration:
         gateway4: 192.168.1.1
         nameservers:
           addresses: [8.8.8.8, 8.8.4.4]
+    # https://netplan.io/examples/#attaching-vlans-to-network-interfaces
     vlans:
       vlan100:
           id: 100
