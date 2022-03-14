@@ -3,3 +3,4 @@
 **/passwords.yml
 roles/
 altair/octavia*
+altair/admin-openrc.sh

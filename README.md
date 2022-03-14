@@ -83,3 +83,16 @@ kolla-ansible --configdir=$CONFIG -i ./all-in-one deploy -e node_custom_config=$
 ```
 
 When this playbook finishes, OpenStack should be up, running and functional.
+
+5. Install the OpenStack CLI client:
+
+```shell
+pip install python-openstackclient -c https://releases.openstack.org/constraints/upper/master
+```
+
+6. Run post-deploy:
+
+```
+kolla-ansible --configdir=$CONFIG -i ./all-in-one post-deploy -e node_custom_config=$CONFIG
+. ./altair/admin-openrc.sh
+```
