@@ -27,3 +27,13 @@ netplan_configuration:
         id: 100
         link: eno1
     version: 2
+
+# laptop:
+# network:
+#   vlans:
+#     vlan100:
+#       id: 100
+#       link: enp0s25
+#       addresses:
+#         - 192.168.10.120/24
+#   version: 2
