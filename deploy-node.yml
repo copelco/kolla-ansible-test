@@ -42,3 +42,62 @@
         fstype: xfs
         dev: /dev/sda4
         # force: yes
+
+- hosts: altair
+  tags: [image]
+  vars:
+    os_images_user: kolla
+    os_images_cache: "/home/{{ os_images_user }}/disk-images"
+    os_images_auth:
+      auth_url: "{{ lookup('env','OS_AUTH_URL') }}"
+      username: "{{ lookup('env','OS_USERNAME') }}"
+      password: "{{ lookup('env','OS_PASSWORD') }}"
+      project_name: "{{ lookup('env','OS_TENANT_NAME') }}"
+      user_domain_name: "{{ lookup('env','OS_USER_DOMAIN_NAME') }}"
+      project_domain_name: "{{ lookup('env', 'OS_PROJECT_DOMAIN_NAME') }}"
+    # Ubuntu Server 20.04 LTS (Focal Fossa)
+    ubuntu_url: https://cloud-images.ubuntu.com/focal/20220314/focal-server-cloudimg-amd64.img
+    ubuntu_checksum: sha256:3fb8d8266ee2f5032865a50f08316437fbd4fc1cbc8f8a264f6d339d750097f6
+  tasks:
+    - name: Check OS_ environment variables are available
+      assert:
+        that:
+          - os_images_auth['auth_url'] != ""
+
+    - name: Install openstacksdk
+      pip:
+        name: openstacksdk>=0.61.0
+
+    - name: Ensure download cache dir exists
+      become: True
+      file:
+        path: "{{ os_images_cache }}"
+        owner: "{{ os_images_user }}"
+        group: "{{ os_images_user }}"
+        state: directory
+
+    # https://docs.openstack.org/image-guide/obtain-images.html
+    - name: Download Ubuntu Image
+      become: True
+      become_user: "{{ os_images_user }}"
+      get_url:
+        url: "{{ ubuntu_url }}"
+        checksum: "{{ ubuntu_checksum }}"
+        dest: "{{ os_images_cache }}/{{ ubuntu_url | basename }}"
+
+    # https://docs.ansible.com/ansible/latest/collections/openstack/cloud/image_module.html
+    - name: Add Ubuntu image to the OpenStack Image Repository
+      openstack.cloud.image:
+        auth: "{{ os_images_auth }}"
+        name: ubuntu
+        container_format: bare
+        disk_format: qcow2
+        state: present
+        filename: "{{ os_images_cache }}/{{ ubuntu_url | basename }}"
+        checksum: "{{ ubuntu_checksum }}"
+        is_public: yes
+        tags:
+          - custom
+        properties:
+          cpu_arch: x86_64
+          distro: ubuntu
