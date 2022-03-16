@@ -36,7 +36,6 @@
         name: KOLLA_SWIFT_DATA
         fs_type: xfs
         state: present
-
     - name: Create a xfs filesystem on Swift partition
       community.general.filesystem:
         fstype: xfs
@@ -63,11 +62,9 @@
       assert:
         that:
           - os_images_auth['auth_url'] != ""
-
     - name: Install openstacksdk
       pip:
         name: openstacksdk>=0.61.0
-
     - name: Ensure download cache dir exists
       become: True
       file:
@@ -75,7 +72,6 @@
         owner: "{{ os_images_user }}"
         group: "{{ os_images_user }}"
         state: directory
-
     # https://docs.openstack.org/image-guide/obtain-images.html
     - name: Download Ubuntu Image
       become: True
@@ -84,7 +80,6 @@
         url: "{{ ubuntu_url }}"
         checksum: "{{ ubuntu_checksum }}"
         dest: "{{ os_images_cache }}/{{ ubuntu_url | basename }}"
-
     # https://docs.ansible.com/ansible/latest/collections/openstack/cloud/image_module.html
     - name: Add Ubuntu image to the OpenStack Image Repository
       openstack.cloud.image:
