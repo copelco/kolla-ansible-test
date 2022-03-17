@@ -27,6 +27,9 @@ ansible-playbook -i ./all-in-one deploy-node.yml --tags security
 Next, configure LVM and partitions for Cinder and Swift. I found [A Linux user's guide to Logical Volume Management](https://opensource.com/business/16/9/linux-users-guide-lvm) a helpful resource.
 
 ```shell
+sudo pvcreate -ff /dev/sda3
+sudo vgcreate cinder-volumes /dev/sda3
+openstack volume service list
 ansible-playbook -i ./all-in-one deploy-node.yml --tags cinder
 ansible-playbook -i ./all-in-one deploy-node.yml --tags swift
 ```
@@ -102,4 +105,11 @@ kolla-ansible --configdir=$CONFIG -i ./all-in-one post-deploy -e node_custom_con
 
 ```shell
 $VIRTUAL_ENV/share/kolla-ansible/init-runonce
+```
+
+
+## 4. Launch instances
+
+```shell
+ansible-playbook -i ./all-in-one deploy-node.yml --tags server
 ```

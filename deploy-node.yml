@@ -47,13 +47,6 @@
   vars:
     os_images_user: kolla
     os_images_cache: "/home/{{ os_images_user }}/disk-images"
-    os_images_auth:
-      auth_url: "{{ lookup('env','OS_AUTH_URL') }}"
-      username: "{{ lookup('env','OS_USERNAME') }}"
-      password: "{{ lookup('env','OS_PASSWORD') }}"
-      project_name: "{{ lookup('env','OS_TENANT_NAME') }}"
-      user_domain_name: "{{ lookup('env','OS_USER_DOMAIN_NAME') }}"
-      project_domain_name: "{{ lookup('env', 'OS_PROJECT_DOMAIN_NAME') }}"
     # Ubuntu Server 20.04 LTS (Focal Fossa)
     ubuntu_url: https://cloud-images.ubuntu.com/focal/20220314/focal-server-cloudimg-amd64.img
     ubuntu_checksum: sha256:3fb8d8266ee2f5032865a50f08316437fbd4fc1cbc8f8a264f6d339d750097f6
@@ -96,3 +89,30 @@
         properties:
           cpu_arch: x86_64
           distro: ubuntu
+
+
+- hosts: altair
+  become: yes
+  tags: [server]
+  tasks:
+    - name: Install openstacksdk
+      pip:
+        name: openstacksdk>=0.61.0
+    - name: Launch Ubuntu instance
+      openstack.cloud.server:
+        name: mira
+        state: present
+        image: ubuntu
+        network: public1
+        key_name: mykey
+        timeout: 200
+        flavor: m1.small
+        auth: "{{ os_images_auth }}"
+    - name: Assign floating IP
+      openstack.cloud.floating_ip:
+        state: present
+        server: mira
+        network: public1
+        floating_ip_address: 192.168.10.105
+        reuse: yes
+        auth: "{{ os_images_auth }}"
