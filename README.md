@@ -62,7 +62,7 @@ Edit `$CONFIG/globals.yml` as needed.
 1. Bootstrap servers with kolla deploy dependencies:
 
 ```shell
-kolla-ansible --configdir=$CONFIG -i ./all-in-one bootstrap-servers
+kolla-ansible --configdir=$CONFIG -i ./multinode bootstrap-servers
 ```
 
 2. Generate Octavia certificates:
@@ -70,19 +70,19 @@ kolla-ansible --configdir=$CONFIG -i ./all-in-one bootstrap-servers
 Override `node_custom_config` Ansible variable to point to correct config directory.
 
 ```shell
-kolla-ansible --configdir=$CONFIG -i ./all-in-one octavia-certificates -e node_custom_config=$CONFIG
+kolla-ansible --configdir=$CONFIG -i ./multinode octavia-certificates -e node_custom_config=$CONFIG
 ```
 
 3. Do pre-deployment checks for hosts:
 
 ```shell
-kolla-ansible --configdir=$CONFIG -i ./all-in-one prechecks -e node_custom_config=$CONFIG
+kolla-ansible --configdir=$CONFIG -i ./multinode prechecks -e node_custom_config=$CONFIG
 ```
 
 4. Finally proceed to actual OpenStack deployment:
 
 ```shell
-kolla-ansible --configdir=$CONFIG -i ./all-in-one deploy -e node_custom_config=$CONFIG
+kolla-ansible --configdir=$CONFIG -i ./multinode deploy -e node_custom_config=$CONFIG
 ```
 
 When this playbook finishes, OpenStack should be up, running and functional.
@@ -96,7 +96,7 @@ pip install python-openstackclient -c https://releases.openstack.org/constraints
 6. Run post-deploy:
 
 ```
-kolla-ansible --configdir=$CONFIG -i ./all-in-one post-deploy -e node_custom_config=$CONFIG
+kolla-ansible --configdir=$CONFIG -i ./multinode post-deploy -e node_custom_config=$CONFIG
 . ./altair/admin-openrc.sh
 ```
 
