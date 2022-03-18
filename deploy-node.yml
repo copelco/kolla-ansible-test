@@ -107,12 +107,15 @@
         key_name: mykey
         timeout: 200
         flavor: m1.small
+        boot_from_volume: yes
+        volume_size: 5
+        # boot_volume: mira-boot-vol
         auth: "{{ os_images_auth }}"
-    - name: Assign floating IP
-      openstack.cloud.floating_ip:
-        state: present
-        server: mira
-        network: public1
-        floating_ip_address: 192.168.10.105
-        reuse: yes
-        auth: "{{ os_images_auth }}"
+    # - name: Assign floating IP
+    #   openstack.cloud.floating_ip:
+    #     state: present
+    #     server: mira
+    #     network: public1
+    #     floating_ip_address: 192.168.10.105
+    #     reuse: yes
+    #     auth: "{{ os_images_auth }}"
