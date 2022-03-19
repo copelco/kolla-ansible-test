@@ -1,0 +1,21 @@
+# mrlesmithjr.netplan
+netplan_config_file: /etc/netplan/00-installer-config.yaml
+netplan_renderer: networkd
+netplan_configuration:
+  network:
+    ethernets:
+      eno1:
+        addresses: [10.190.30.50/24]
+        nameservers:
+          addresses: [1.1.1.1, 1.0.0.1]
+        routes:
+          - {to: default, via: 10.190.30.1}
+    vlans:
+      vlan504:
+        id: 504
+        link: eno1
+        addresses: []
+      vlan100:
+        id: 100
+        link: eno1
+    version: 2

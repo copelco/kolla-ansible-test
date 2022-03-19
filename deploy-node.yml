@@ -5,7 +5,7 @@
     - geerlingguy.github-users
     - geerlingguy.security
 
-- hosts: altair
+- hosts: compute
   become: yes
   tags: [network]
   roles:

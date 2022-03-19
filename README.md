@@ -34,6 +34,12 @@ ansible-playbook -i ./all-in-one deploy-node.yml --tags cinder
 ansible-playbook -i ./all-in-one deploy-node.yml --tags swift
 ```
 
+Configure network interfaces to communicate over vlan:
+
+```shell
+ansible-playbook -i ./multinode deploy-node.yml --tags network
+```
+
 
 ## 2. Setup
 
